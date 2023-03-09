@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    public float movementSpeed = 5f;
+    [Header("Movement Speeds")]
+    [Tooltip("Speed at which player walks")]
+    public float walkingSpeed = 1.5f;
+
+    [Tooltip("Speed at which player runs")]
+    public float runningSpeed = 5f;
+
+    [Tooltip("Speed at which player sprints")]
+    public float sprintingSpeed = 7f;
+
+    [Tooltip("Speed at which player rotates")]
     public float rotationSpeed = 15f;
+
+    [HideInInspector] public bool isSprinting;
 
     private InputManager _inputManager;
 
@@ -33,6 +45,16 @@ public class PlayerLocomotion : MonoBehaviour
         _moveDirection += _cameraObjectTransform.right * _inputManager.horizontalInput;
         _moveDirection.Normalize();
         _moveDirection.y = 0;
+
+        float movementSpeed;
+        if (isSprinting)
+        {
+            movementSpeed = sprintingSpeed;
+        }
+        else
+        {
+            movementSpeed = _inputManager.moveAmount > 0.5 ? runningSpeed : walkingSpeed;
+        }
 
         var movementVelocity = _moveDirection * movementSpeed;
 
