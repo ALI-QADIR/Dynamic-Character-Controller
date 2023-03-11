@@ -19,8 +19,6 @@ public class AnimationManager : MonoBehaviour
     {
         // Animation Snapping
 
-        #region Animation Snapping
-
         float snappedHorizontal;
         float snappedVertical;
 
@@ -53,8 +51,6 @@ public class AnimationManager : MonoBehaviour
             snappedVertical = 0;
 
         #endregion Vertical Snapping
-
-        #endregion Animation Snapping
 
         if (isSprinting)
             snappedVertical = 2;

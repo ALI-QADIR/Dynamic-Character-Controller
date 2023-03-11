@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
+    #region Movement Speed Variables
+
     [Header("Movement Speeds")]
     [Tooltip("Speed at which player walks")]
     public float walkingSpeed = 1.5f;
@@ -17,20 +19,43 @@ public class PlayerLocomotion : MonoBehaviour
     [Tooltip("Speed at which player rotates")]
     public float rotationSpeed = 15f;
 
-    [HideInInspector] public bool isSprinting;
+    #endregion Movement Speed Variables
 
-    private InputManager _inputManager;
+    #region Jumping Mechanic Variables
+
+    [Header("Jumping Mechanic")]
+    [Tooltip("Multiplier for gravity")]
+    public float gravityModifier;
+
+    public Transform groundCheck;
+
+    [SerializeField] private LayerMask _groundLayer;
+
+    #endregion Jumping Mechanic Variables
+
+    [HideInInspector]
+    public bool isSprinting;
+
+    /*[HideInInspector] */
 
     private Vector3 _moveDirection;
     private Transform _cameraObjectTransform;
 
     private Rigidbody _playeRigidbody;
 
+    private InputManager _inputManager;
+
     private void Awake()
     {
         _inputManager = GetComponent<InputManager>();
+
         _playeRigidbody = GetComponent<Rigidbody>();
         _cameraObjectTransform = Camera.main.transform;
+    }
+
+    private void Start()
+    {
+        Physics.gravity *= gravityModifier;
     }
 
     public void HandleAllMovements()
