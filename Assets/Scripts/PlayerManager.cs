@@ -15,11 +15,11 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         _inputManager.HandleAllInputs();
-        if (_inputManager.CheckInputFlags())
-            _playerLocomotion.HandleAllMovements();
     }
 
     private void FixedUpdate()
     {
+        if (_inputManager.CheckInputFlags() || _playerLocomotion.isJumping)
+            _playerLocomotion.HandleAllMovements();
     }
 }

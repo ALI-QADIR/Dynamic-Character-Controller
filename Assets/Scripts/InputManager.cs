@@ -90,11 +90,6 @@ public class InputManager : MonoBehaviour
         _playerLocomotion.isJumpPressed = xButtonInput;
     }
 
-    private void Update()
-    {
-        HandleAllInputs();
-    }
-
     public bool CheckInputFlags()
     {
         return (lTriggerInput || xButtonInput || isMovementPressed);

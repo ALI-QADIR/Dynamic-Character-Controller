@@ -38,7 +38,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     [Tooltip("Ground Layer Mask"), SerializeField] private LayerMask _groundLayer;
 
-    private bool _isJumping;
+    [HideInInspector] public bool isJumping;
 
     #endregion Jumping Mechanic Variables
 
@@ -109,16 +109,16 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleJump()
     {
-        if (!_isJumping && isJumpPressed && GroundCheck())
+        if (!isJumping && isJumpPressed && GroundCheck())
         {
-            _isJumping = true;
+            isJumping = true;
             Debug.Log("Jumped");
             _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Impulse);
         }
-        else if (!isJumpPressed && GroundCheck() && _isJumping)
+        else if (!isJumpPressed && GroundCheck() && isJumping)
         {
             Debug.Log("back to ground");
-            _isJumping = false;
+            isJumping = false;
         }
     }
 
