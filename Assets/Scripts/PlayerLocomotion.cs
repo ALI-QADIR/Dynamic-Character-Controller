@@ -28,7 +28,10 @@ public class PlayerLocomotion : MonoBehaviour
     #region Jumping Mechanic Variables
 
     [Header("Jumping Mechanic")]
-    public float jumpForce = 500;
+    public float jumpForce = 150;
+
+    [Tooltip("Additional gravity multiplier for snappy falls"), SerializeField]
+    private float _fallMultiplier;
 
     [Tooltip("Checks if the player is jumping or not")]
     public bool isJumpPressed = false;
@@ -46,12 +49,13 @@ public class PlayerLocomotion : MonoBehaviour
     private Transform _cameraObjectTransform;
 
     private Rigidbody _playerRigidBody;
-
+    private AnimationManager _animationManager;
     private InputManager _inputManager;
 
     private void Awake()
     {
         _inputManager = GetComponent<InputManager>();
+        _animationManager = GetComponent<AnimationManager>();
 
         _playerRigidBody = GetComponent<Rigidbody>();
         _cameraObjectTransform = Camera.main.transform;
@@ -109,7 +113,8 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (isJumping || !isJumpPressed || !GroundCheck()) return;
         isJumping = true;
-        _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Impulse);
+        _animationManager.HandleJumpAnimation(isJumping);
+        _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Acceleration);
     }
 
     private bool GroundCheck()
@@ -121,12 +126,18 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (!isJumpPressed || GroundCheck() || isJumping)
         {
+            _animationManager.HandleJumpAnimation(!GroundCheck());
             isJumping = false;
         }
 
         if (!_inputManager.isMovementPressed && (_playerRigidBody.velocity.x != 0 || _playerRigidBody.velocity.z != 0))
         {
             _playerRigidBody.velocity = new Vector3(0, _playerRigidBody.velocity.y, 0);
+        }
+
+        if (_playerRigidBody.velocity.y < 0)
+        {
+            _playerRigidBody.velocity += (_fallMultiplier - 1) * Time.deltaTime * Physics.gravity.y * Vector3.up;
         }
     }
 }

@@ -651,7 +651,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1518598366}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.003873825, y: 12.25, z: -0.5467658}
+  m_LocalPosition: {x: 0.003873825, y: 6, z: -0.5467658}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -704,12 +704,14 @@ MonoBehaviour:
   sprintingSpeed: 7
   rotationSpeed: 15
   isSprinting: 0
-  jumpForce: 500
+  jumpForce: 150
+  _fallMultiplier: 2.5
   isJumpPressed: 0
   groundCheck: {fileID: 161441224}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  isJumping: 0
 --- !u!114 &1518598373
 MonoBehaviour:
   m_ObjectHideFlags: 0

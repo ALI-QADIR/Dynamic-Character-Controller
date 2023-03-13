@@ -1,3 +1,4 @@
+using UnityEditor.XR;
 using UnityEngine;
 
 #pragma warning disable CS0649
@@ -6,13 +7,20 @@ using UnityEngine;
 public class AnimationManager : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
-    private int _horizontal;
-    private int _vertical;
+    private int _horizontalHash;
+    private int _verticalHash;
+    private int _isJumpingHash;
 
     private void Awake()
     {
-        _horizontal = Animator.StringToHash("Horizontal");
-        _vertical = Animator.StringToHash("Vertical");
+        _horizontalHash = Animator.StringToHash("Horizontal");
+        _verticalHash = Animator.StringToHash("Vertical");
+        _isJumpingHash = Animator.StringToHash("IsJumping");
+    }
+
+    public void HandleJumpAnimation(bool isJumping)
+    {
+        _animator.SetBool(_isJumpingHash, isJumping);
     }
 
     public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement, bool isSprinting)
@@ -55,7 +63,7 @@ public class AnimationManager : MonoBehaviour
         if (isSprinting)
             snappedVertical = 2;
 
-        _animator.SetFloat(_horizontal, snappedHorizontal, 0.1f, Time.deltaTime);
-        _animator.SetFloat(_vertical, snappedVertical, 0.1f, Time.deltaTime);
+        _animator.SetFloat(_horizontalHash, snappedHorizontal, 0.1f, Time.deltaTime);
+        _animator.SetFloat(_verticalHash, snappedVertical, 0.1f, Time.deltaTime);
     }
 }
