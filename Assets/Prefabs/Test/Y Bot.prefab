@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &533938686
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 533938687}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &533938687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 533938686}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8819032083957010939}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &37632142732016686
 GameObject:
   m_ObjectHideFlags: 0
@@ -2202,7 +2233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8819032083957010939}
   - component: {fileID: 3207497657119017857}
-  - component: {fileID: 9073002319795893783}
+  - component: {fileID: 913275406}
   - component: {fileID: 9073002319795893780}
   - component: {fileID: 9073002319795893782}
   - component: {fileID: 9073002319795893778}
@@ -2230,6 +2261,7 @@ Transform:
   - {fileID: 9102219861882710037}
   - {fileID: 6886182189049893588}
   - {fileID: 3905513921842884975}
+  - {fileID: 533938687}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2253,7 +2285,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
---- !u!54 &9073002319795893783
+--- !u!54 &913275406
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2279,7 +2311,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.19067223
+  m_Radius: 0.2
   m_Height: 1.8190475
   m_Direction: 1
   m_Center: {x: 0, y: 0.90894294, z: 0}
@@ -2295,19 +2327,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e5197cb56d1f2641a75de151a9cf970, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkingSpeed: 3.375
-  runningSpeed: 9
-  sprintingSpeed: 15.75
+  walkingSpeed: 7
+  runningSpeed: 10
+  sprintingSpeed: 14
   rotationSpeed: 15
-  gravityModifier: 50
-  leapingVelocity: 2
-  rayCastHeightOffset: 0.5
-  sphereCastRadius: 0.2
-  groundLayer:
+  isSprinting: 0
+  jumpForce: 5000
+  isJumpPressed: 0
+  _gravityModifier: 1
+  groundCheck: {fileID: 533938687}
+  _groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  isSprinting: 0
-  isGrounded: 0
 --- !u!114 &9073002319795893778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2336,6 +2367,7 @@ MonoBehaviour:
   verticalInput: 0
   horizontalInput: 0
   lTriggerInput: 0
+  xButtonInput: 0
   moveAmount: 0
 --- !u!114 &5866666021865046377
 MonoBehaviour:
@@ -2349,7 +2381,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 179223dbb305ccc4bb7b8301064b8908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isInteracting: 0
 --- !u!1 &8281212709007419418
 GameObject:
   m_ObjectHideFlags: 0

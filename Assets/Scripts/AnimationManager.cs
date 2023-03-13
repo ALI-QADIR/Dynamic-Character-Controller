@@ -1,16 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable CS0649
+
+// ReSharper disable once CheckNamespace
 public class AnimationManager : MonoBehaviour
 {
-    private Animator _animator;
+    [SerializeField] private Animator _animator;
     private int _horizontal;
     private int _vertical;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
         _horizontal = Animator.StringToHash("Horizontal");
         _vertical = Animator.StringToHash("Vertical");
     }

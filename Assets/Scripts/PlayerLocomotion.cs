@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable CS0649
+
+// ReSharper disable once CheckNamespace
 public class PlayerLocomotion : MonoBehaviour
 {
     #region Movement Speed Variables
@@ -19,29 +20,32 @@ public class PlayerLocomotion : MonoBehaviour
     [Tooltip("Speed at which player rotates")]
     public float rotationSpeed = 15f;
 
+    [HideInInspector]
+    public bool isSprinting;
+
     #endregion Movement Speed Variables
 
     #region Jumping Mechanic Variables
 
     [Header("Jumping Mechanic")]
-    [Tooltip("Multiplier for gravity")]
-    public float gravityModifier;
+    public float jumpForce = 500;
 
+    [Tooltip("Checks if the player is jumping or not")]
+    public bool isJumpPressed = false;
+
+    [Tooltip("Ground Check empty object that is placed at the feet of the character")]
     public Transform groundCheck;
 
-    [SerializeField] private LayerMask _groundLayer;
+    [Tooltip("Ground Layer Mask"), SerializeField] private LayerMask _groundLayer;
+
+    private bool _isJumping;
 
     #endregion Jumping Mechanic Variables
-
-    [HideInInspector]
-    public bool isSprinting;
-
-    /*[HideInInspector] */
 
     private Vector3 _moveDirection;
     private Transform _cameraObjectTransform;
 
-    private Rigidbody _playeRigidbody;
+    private Rigidbody _playerRigidBody;
 
     private InputManager _inputManager;
 
@@ -49,19 +53,16 @@ public class PlayerLocomotion : MonoBehaviour
     {
         _inputManager = GetComponent<InputManager>();
 
-        _playeRigidbody = GetComponent<Rigidbody>();
+        _playerRigidBody = GetComponent<Rigidbody>();
         _cameraObjectTransform = Camera.main.transform;
-    }
-
-    private void Start()
-    {
-        Physics.gravity *= gravityModifier;
     }
 
     public void HandleAllMovements()
     {
         HandleMovement();
-        HandleRotation();
+        /*        HandleRotation();
+        */
+        HandleJump();
     }
 
     private void HandleMovement()
@@ -69,7 +70,6 @@ public class PlayerLocomotion : MonoBehaviour
         _moveDirection = _cameraObjectTransform.forward * _inputManager.verticalInput;
         _moveDirection += _cameraObjectTransform.right * _inputManager.horizontalInput;
         _moveDirection.Normalize();
-        _moveDirection.y = 0;
 
         float movementSpeed;
         if (isSprinting)
@@ -81,12 +81,15 @@ public class PlayerLocomotion : MonoBehaviour
             movementSpeed = _inputManager.moveAmount > 0.5 ? runningSpeed : walkingSpeed;
         }
 
-        var movementVelocity = _moveDirection * movementSpeed;
+        Vector3 movementVelocity;
+        movementVelocity.x = _moveDirection.x * movementSpeed;
+        movementVelocity.y = _playerRigidBody.velocity.y;
+        movementVelocity.z = _moveDirection.z * movementSpeed;
 
-        _playeRigidbody.velocity = movementVelocity;
+        _playerRigidBody.velocity = movementVelocity;
     }
 
-    private void HandleRotation()
+    /*private void HandleRotation()
     {
         var targetDirection = _cameraObjectTransform.forward * _inputManager.verticalInput;
         targetDirection += _cameraObjectTransform.right * _inputManager.horizontalInput;
@@ -99,8 +102,28 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         var targetRotation = Quaternion.LookRotation(targetDirection);
-        var playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        var playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
 
         transform.rotation = playerRotation;
+    }*/
+
+    private void HandleJump()
+    {
+        if (!_isJumping && isJumpPressed && GroundCheck())
+        {
+            _isJumping = true;
+            Debug.Log("Jumped");
+            _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Impulse);
+        }
+        else if (!isJumpPressed && GroundCheck() && _isJumping)
+        {
+            Debug.Log("back to ground");
+            _isJumping = false;
+        }
+    }
+
+    private bool GroundCheck()
+    {
+        return Physics.CheckSphere(groundCheck.position, 0.1f, _groundLayer);
     }
 }
