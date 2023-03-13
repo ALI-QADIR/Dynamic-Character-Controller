@@ -64,13 +64,14 @@ public class PlayerLocomotion : MonoBehaviour
     public void HandleAllMovements()
     {
         HandleMovement();
+        HandleRotation();
         HandleJump();
     }
 
     private void HandleMovement()
     {
-        _moveDirection = _cameraObjectTransform.forward * _inputManager.verticalInput;
-        _moveDirection += _cameraObjectTransform.right * _inputManager.horizontalInput;
+        _moveDirection = transform.forward * _inputManager.verticalInput;
+        _moveDirection += transform.right * _inputManager.horizontalInput;
         _moveDirection.Normalize();
 
         float movementSpeed;
@@ -91,8 +92,21 @@ public class PlayerLocomotion : MonoBehaviour
         _playerRigidBody.velocity = movementVelocity;
     }
 
-    /*private void HandleRotation()
+    private void HandleRotation()
     {
+        if (_playerRigidBody.velocity == Vector3.zero) return;
+
+        var currentRotationX = transform.rotation.x;
+        var currentRotationZ = transform.rotation.z;
+
+        var targetAngle = _cameraObjectTransform.eulerAngles.y;
+        var targetRotationEuler = Quaternion.Euler(currentRotationX, targetAngle, currentRotationZ);
+        var currentRotationEuler = Quaternion.Euler(transform.eulerAngles);
+
+        transform.rotation = Quaternion.Lerp(currentRotationEuler, targetRotationEuler, rotationSpeed * Time.fixedDeltaTime);
+
+        // ReSharper disable once CommentTypo
+        /* // Legacy code for rotation
         var targetDirection = _cameraObjectTransform.forward * _inputManager.verticalInput;
         targetDirection += _cameraObjectTransform.right * _inputManager.horizontalInput;
         targetDirection.Normalize();
@@ -106,8 +120,8 @@ public class PlayerLocomotion : MonoBehaviour
         var targetRotation = Quaternion.LookRotation(targetDirection);
         var playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
 
-        transform.rotation = playerRotation;
-    }*/
+        transform.rotation = playerRotation;*/
+    }
 
     private void HandleJump()
     {

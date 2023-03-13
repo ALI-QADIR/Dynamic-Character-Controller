@@ -292,6 +292,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "PLayerLook",
+            "id": "b6f5f11a-20e4-4e72-b413-13226bd47f31",
+            "actions": [
+                {
+                    "name": "Look",
+                    "type": "PassThrough",
+                    "id": "2bb1461c-1942-4dbd-b23d-c31ffed0ee4e",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "256fec19-8903-4343-bae2-ed348d1bcf76",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8aa43c57-5749-467f-91bb-2eade0c39742",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

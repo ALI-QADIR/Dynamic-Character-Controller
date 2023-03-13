@@ -314,6 +314,45 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PLayerLook"",
+            ""id"": ""b6f5f11a-20e4-4e72-b413-13226bd47f31"",
+            ""actions"": [
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""2bb1461c-1942-4dbd-b23d-c31ffed0ee4e"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""256fec19-8903-4343-bae2-ed348d1bcf76"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8aa43c57-5749-467f-91bb-2eade0c39742"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -327,6 +366,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
         m_PlayerActions_LightAttack = m_PlayerActions.FindAction("LightAttack", throwIfNotFound: true);
         m_PlayerActions_HeavyAttack = m_PlayerActions.FindAction("HeavyAttack", throwIfNotFound: true);
+        // PLayerLook
+        m_PLayerLook = asset.FindActionMap("PLayerLook", throwIfNotFound: true);
+        m_PLayerLook_Look = m_PLayerLook.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -472,6 +514,39 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+
+    // PLayerLook
+    private readonly InputActionMap m_PLayerLook;
+    private IPLayerLookActions m_PLayerLookActionsCallbackInterface;
+    private readonly InputAction m_PLayerLook_Look;
+    public struct PLayerLookActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PLayerLookActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Look => m_Wrapper.m_PLayerLook_Look;
+        public InputActionMap Get() { return m_Wrapper.m_PLayerLook; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PLayerLookActions set) { return set.Get(); }
+        public void SetCallbacks(IPLayerLookActions instance)
+        {
+            if (m_Wrapper.m_PLayerLookActionsCallbackInterface != null)
+            {
+                @Look.started -= m_Wrapper.m_PLayerLookActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PLayerLookActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PLayerLookActionsCallbackInterface.OnLook;
+            }
+            m_Wrapper.m_PLayerLookActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
+            }
+        }
+    }
+    public PLayerLookActions @PLayerLook => new PLayerLookActions(this);
     public interface IPlayerMovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -482,5 +557,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnLightAttack(InputAction.CallbackContext context);
         void OnHeavyAttack(InputAction.CallbackContext context);
+    }
+    public interface IPLayerLookActions
+    {
+        void OnLook(InputAction.CallbackContext context);
     }
 }
