@@ -60,8 +60,6 @@ public class PlayerLocomotion : MonoBehaviour
     public void HandleAllMovements()
     {
         HandleMovement();
-        /*        HandleRotation();
-        */
         HandleJump();
     }
 
@@ -109,21 +107,26 @@ public class PlayerLocomotion : MonoBehaviour
 
     private void HandleJump()
     {
-        if (!isJumping && isJumpPressed && GroundCheck())
-        {
-            isJumping = true;
-            Debug.Log("Jumped");
-            _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Impulse);
-        }
-        else if (!isJumpPressed && GroundCheck() && isJumping)
-        {
-            Debug.Log("back to ground");
-            isJumping = false;
-        }
+        if (isJumping || !isJumpPressed || !GroundCheck()) return;
+        isJumping = true;
+        _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Impulse);
     }
 
     private bool GroundCheck()
     {
         return Physics.CheckSphere(groundCheck.position, 0.1f, _groundLayer);
+    }
+
+    private void Update()
+    {
+        if (!isJumpPressed || GroundCheck() || isJumping)
+        {
+            isJumping = false;
+        }
+
+        if (!_inputManager.isMovementPressed && (_playerRigidBody.velocity.x != 0 || _playerRigidBody.velocity.z != 0))
+        {
+            _playerRigidBody.velocity = new Vector3(0, _playerRigidBody.velocity.y, 0);
+        }
     }
 }

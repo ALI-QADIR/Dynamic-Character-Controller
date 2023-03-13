@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_inputManager.CheckInputFlags() || _playerLocomotion.isJumping)
+        if (_inputManager.CheckInputFlags())
             _playerLocomotion.HandleAllMovements();
     }
 }
