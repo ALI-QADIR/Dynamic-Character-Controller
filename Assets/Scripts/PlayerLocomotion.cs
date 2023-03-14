@@ -14,14 +14,11 @@ public class PlayerLocomotion : MonoBehaviour
     [Tooltip("Speed at which player runs")]
     public float runningSpeed = 5f;
 
-    [Tooltip("Speed at which player sprints")]
-    public float sprintingSpeed = 7f;
-
     [Tooltip("Speed at which player rotates")]
     public float rotationSpeed = 15f;
 
     [HideInInspector]
-    public bool isSprinting;
+    public bool isWalking;
 
     #endregion Movement Speed Variables
 
@@ -75,14 +72,13 @@ public class PlayerLocomotion : MonoBehaviour
         _moveDirection.Normalize();
 
         float movementSpeed;
-        if (isSprinting)
-        {
-            movementSpeed = sprintingSpeed;
-        }
+        if (isWalking)
+            movementSpeed = walkingSpeed;
+        else if (Mathf.Abs(_inputManager.verticalInput) is > 0 and < 0.7f ||
+                 Mathf.Abs(_inputManager.horizontalInput) is > 0 and < 0.7f)
+            movementSpeed = walkingSpeed;
         else
-        {
-            movementSpeed = _inputManager.moveAmount > 0.5 ? runningSpeed : walkingSpeed;
-        }
+            movementSpeed = runningSpeed;
 
         Vector3 movementVelocity;
         movementVelocity.x = _moveDirection.x * movementSpeed;

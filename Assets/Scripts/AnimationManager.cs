@@ -1,4 +1,3 @@
-using UnityEditor.XR;
 using UnityEngine;
 
 #pragma warning disable CS0649
@@ -23,7 +22,7 @@ public class AnimationManager : MonoBehaviour
         _animator.SetBool(_isJumpingHash, isJumping);
     }
 
-    public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement, bool isSprinting)
+    public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement)
     {
         // Animation Snapping
 
@@ -59,9 +58,6 @@ public class AnimationManager : MonoBehaviour
             snappedVertical = 0;
 
         #endregion Vertical Snapping
-
-        if (isSprinting)
-            snappedVertical = 2;
 
         _animator.SetFloat(_horizontalHash, snappedHorizontal, 0.1f, Time.deltaTime);
         _animator.SetFloat(_verticalHash, snappedVertical, 0.1f, Time.deltaTime);

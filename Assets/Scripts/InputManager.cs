@@ -10,10 +10,9 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public float verticalInput;
     [HideInInspector] public float horizontalInput;
 
-    [HideInInspector] public bool lTriggerInput;
+    /*[HideInInspector] public bool lTriggerInput;*/
+    [HideInInspector] public bool lControlInput;
     [HideInInspector] public bool xButtonInput;
-
-    [HideInInspector] public float moveAmount;
 
     private AnimationManager _animationManager;
     private PlayerControls _playerControls;
@@ -29,8 +28,11 @@ public class InputManager : MonoBehaviour
         _playerControls.PlayerMovement.Movement.performed += OnMovementInput;
         _playerControls.PlayerMovement.Movement.canceled += OnMovementInput;
 
-        _playerControls.PlayerActions.Sprinting.performed += OnSprintingInput;
-        _playerControls.PlayerActions.Sprinting.canceled += OnSprintingInput;
+        _playerControls.PlayerMovement.Walk.performed += OnWalkInput;
+        _playerControls.PlayerMovement.Walk.canceled += OnWalkInput;
+
+        /*_playerControls.PlayerActions.Sprinting.performed += OnSprintingInput;
+        _playerControls.PlayerActions.Sprinting.canceled += OnSprintingInput;*/
 
         _playerControls.PlayerActions.Jump.started += OnJumpInput;
         _playerControls.PlayerActions.Jump.canceled += OnJumpInput;
@@ -44,9 +46,14 @@ public class InputManager : MonoBehaviour
         isMovementPressed = verticalInput != 0 || horizontalInput != 0;
     }
 
-    private void OnSprintingInput(InputAction.CallbackContext context)
+    /*private void OnSprintingInput(InputAction.CallbackContext context)
     {
         lTriggerInput = context.ReadValueAsButton();
+    }*/
+
+    private void OnWalkInput(InputAction.CallbackContext context)
+    {
+        lControlInput = context.ReadValueAsButton();
     }
 
     private void OnJumpInput(InputAction.CallbackContext context)
@@ -68,21 +75,28 @@ public class InputManager : MonoBehaviour
     {
         HandleJumpInput();
         HandleMovementInput();
-        HandleSprintingInput();
+        HandleWalkInput();
     }
 
     private void HandleMovementInput()
     {
-        moveAmount = Mathf.Clamp01(Mathf.Abs(horizontalInput) + Mathf.Abs(verticalInput));
-        _animationManager.UpdateAnimatorValues(0, moveAmount, _playerLocomotion.isSprinting);
+        float horizontal, vertical;
+        if (lControlInput)
+        {
+            horizontal = horizontalInput / 2;
+            vertical = verticalInput / 2;
+        }
+        else
+        {
+            horizontal = horizontalInput;
+            vertical = verticalInput;
+        }
+        _animationManager.UpdateAnimatorValues(horizontal, vertical);
     }
 
-    private void HandleSprintingInput()
+    private void HandleWalkInput()
     {
-        if (lTriggerInput && moveAmount > 0.5f)
-            _playerLocomotion.isSprinting = true;
-        else
-            _playerLocomotion.isSprinting = false;
+        _playerLocomotion.isWalking = lControlInput;
     }
 
     private void HandleJumpInput()
@@ -92,6 +106,6 @@ public class InputManager : MonoBehaviour
 
     public bool CheckInputFlags()
     {
-        return (lTriggerInput || xButtonInput || isMovementPressed);
+        return (xButtonInput || isMovementPressed);
     }
 }
