@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 // ReSharper disable once CheckNamespace
 public class InputManager : MonoBehaviour
 {
-    public Vector2 movementInput;
+    [HideInInspector] public Vector2 movementInput;
     [HideInInspector] public bool isMovementPressed;
 
     [HideInInspector] public float verticalInput;
@@ -91,7 +91,7 @@ public class InputManager : MonoBehaviour
             horizontal = horizontalInput;
             vertical = verticalInput;
         }
-        _animationManager.UpdateAnimatorValues(horizontal, vertical);
+        _animationManager.UpdateMovementAnimatorValues(horizontal, vertical);
     }
 
     private void HandleWalkInput()

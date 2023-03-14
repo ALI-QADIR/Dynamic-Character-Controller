@@ -123,7 +123,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (isJumping || !isJumpPressed || !GroundCheck()) return;
         isJumping = true;
-        _animationManager.HandleJumpAnimation(isJumping);
+        _animationManager.HandleJumpAnimation(isJumping, isWalking);
         _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Acceleration);
     }
 
@@ -136,7 +136,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (!isJumpPressed || GroundCheck() || isJumping)
         {
-            _animationManager.HandleJumpAnimation(!GroundCheck());
+            _animationManager.HandleJumpAnimation(!GroundCheck(), isWalking);
             isJumping = false;
         }
 

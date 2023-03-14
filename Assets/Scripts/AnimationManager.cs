@@ -9,20 +9,23 @@ public class AnimationManager : MonoBehaviour
     private int _horizontalHash;
     private int _verticalHash;
     private int _isJumpingHash;
+    private int _isWalkingHash;
 
     private void Awake()
     {
         _horizontalHash = Animator.StringToHash("Horizontal");
         _verticalHash = Animator.StringToHash("Vertical");
         _isJumpingHash = Animator.StringToHash("IsJumping");
+        _isWalkingHash = Animator.StringToHash("IsWalking");
     }
 
-    public void HandleJumpAnimation(bool isJumping)
+    public void HandleJumpAnimation(bool isJumping, bool isWalking)
     {
         _animator.SetBool(_isJumpingHash, isJumping);
+        _animator.SetBool(_isWalkingHash, isWalking);
     }
 
-    public void UpdateAnimatorValues(float horizontalMovement, float verticalMovement)
+    public void UpdateMovementAnimatorValues(float horizontalMovement, float verticalMovement)
     {
         // Animation Snapping
 
