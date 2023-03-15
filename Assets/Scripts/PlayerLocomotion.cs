@@ -5,6 +5,8 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 public class PlayerLocomotion : MonoBehaviour
 {
+    #region Variables
+
     #region Movement Speed Variables
 
     [Header("Movement Speeds")]
@@ -42,12 +44,43 @@ public class PlayerLocomotion : MonoBehaviour
 
     #endregion Jumping Mechanic Variables
 
+    #region Block Mechanic Variables
+
+    [HideInInspector] public bool isBlockingPressed;
+
+    [HideInInspector] public bool isBlocking;
+
+    #endregion Block Mechanic Variables
+
+    #region Dodge Mechanic Variables
+
+    [HideInInspector] public bool isDodgePressed;
+
+    [HideInInspector] public bool isDodging;
+
+    // [SerializeField] private float _dodgeForce = 100f;
+
+    #endregion Dodge Mechanic Variables
+
+    #region Private Variables
+
     private Vector3 _moveDirection;
+
     private Transform _cameraObjectTransform;
 
+    #endregion Private Variables
+
+    #region Component Variables
+
     private Rigidbody _playerRigidBody;
+
     private AnimationManager _animationManager;
+
     private InputManager _inputManager;
+
+    #endregion Component Variables
+
+    #endregion Variables
 
     private void Awake()
     {
@@ -60,6 +93,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleAllMovements()
     {
+        if (isBlockingPressed) return;
+        if (isDodging) return;
         HandleMovement();
         HandleRotation();
         HandleJump();
@@ -127,6 +162,22 @@ public class PlayerLocomotion : MonoBehaviour
         _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Acceleration);
     }
 
+    public void HandleBlock()
+    {
+        if (isBlocking.Equals(isBlockingPressed)) return;
+        isBlocking = isBlockingPressed;
+        _animationManager.HandleBlockAnimation(isBlocking);
+    }
+
+    /*public void HandleDodge()
+    {
+        Debug.Log("Handle Dodge: " + isDodgePressed);
+        if (isDodging || !isDodgePressed || !GroundCheck()) return;
+        isDodging = true;
+        _animationManager.HandleDodgeAnimation();
+        _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Impulse);
+    }*/
+
     private bool GroundCheck()
     {
         return Physics.CheckSphere(_groundCheck.position, 0.1f, _groundLayer);
@@ -139,6 +190,8 @@ public class PlayerLocomotion : MonoBehaviour
             _animationManager.HandleJumpAnimation(!GroundCheck());
             isJumping = false;
         }
+        /*
+        if (!isDodging || !GroundCheck()) { isDodging = false; }*/
 
         if (!_inputManager.isMovementPressed && (_playerRigidBody.velocity.x != 0 || _playerRigidBody.velocity.z != 0))
         {

@@ -9,18 +9,33 @@ public class AnimationManager : MonoBehaviour
     private int _horizontalHash;
     private int _verticalHash;
     private int _isJumpingHash;
+    private int _blockingAnimationHash;
+    private int _dodgingAnimationHash;
 
     private void Awake()
     {
         _horizontalHash = Animator.StringToHash("Horizontal");
         _verticalHash = Animator.StringToHash("Vertical");
         _isJumpingHash = Animator.StringToHash("IsJumping");
+        _blockingAnimationHash = Animator.StringToHash("Blocking");
+        _dodgingAnimationHash = Animator.StringToHash("Dodge");
     }
 
     public void HandleJumpAnimation(bool isJumping)
     {
         _animator.SetBool(_isJumpingHash, isJumping);
     }
+
+    public void HandleBlockAnimation(bool isBlocking)
+    {
+        _animator.SetBool("IsBlocking", isBlocking);
+        _animator.CrossFade(_blockingAnimationHash, 0.1f);
+    }
+
+    /*public void HandleDodgeAnimation()
+    {
+        _animator.CrossFade(_dodgingAnimationHash, 0.1f);
+    }*/
 
     public void UpdateMovementAnimatorValues(float horizontalMovement, float verticalMovement)
     {

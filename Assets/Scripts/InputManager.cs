@@ -11,8 +11,10 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public float horizontalInput;
 
     /*[HideInInspector] public bool lTriggerInput;*/
-    [HideInInspector] public bool lControlInput;
-    [HideInInspector] public bool xButtonInput;
+    [HideInInspector] public bool sprintInput;
+    [HideInInspector] public bool jumpInput;
+    [HideInInspector] public bool blockInput;
+    [HideInInspector] public bool dodgeInput;
 
     private AnimationManager _animationManager;
     private PlayerControls _playerControls;
@@ -36,6 +38,12 @@ public class InputManager : MonoBehaviour
 
         _playerControls.PlayerActions.Jump.started += OnJumpInput;
         _playerControls.PlayerActions.Jump.canceled += OnJumpInput;
+
+        _playerControls.PlayerActions.Block.started += OnBlockInput;
+        _playerControls.PlayerActions.Block.canceled += OnBlockInput;
+
+        _playerControls.PlayerActions.Dodge.started += OnDodgeInput;
+        _playerControls.PlayerActions.Dodge.canceled += OnDodgeInput;
     }
 
     private void OnMovementInput(InputAction.CallbackContext context)
@@ -53,12 +61,22 @@ public class InputManager : MonoBehaviour
 
     private void OnWalkInput(InputAction.CallbackContext context)
     {
-        lControlInput = context.ReadValueAsButton();
+        sprintInput = context.ReadValueAsButton();
     }
 
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        xButtonInput = context.ReadValueAsButton();
+        jumpInput = context.ReadValueAsButton();
+    }
+
+    private void OnBlockInput(InputAction.CallbackContext context)
+    {
+        blockInput = context.ReadValueAsButton();
+    }
+
+    private void OnDodgeInput(InputAction.CallbackContext context)
+    {
+        dodgeInput = context.ReadValueAsButton();
     }
 
     private void OnEnable()
@@ -73,6 +91,8 @@ public class InputManager : MonoBehaviour
 
     public void HandleAllInputs()
     {
+        HandleBlockInput();
+        // HandleDodgeInput();
         HandleJumpInput();
         HandleMovementInput();
         HandleWalkInput();
@@ -81,7 +101,7 @@ public class InputManager : MonoBehaviour
     private void HandleMovementInput()
     {
         float horizontal, vertical;
-        if (lControlInput)
+        if (sprintInput)
         {
             horizontal = horizontalInput / 2;
             vertical = verticalInput / 2;
@@ -91,21 +111,33 @@ public class InputManager : MonoBehaviour
             horizontal = horizontalInput;
             vertical = verticalInput;
         }
+
         _animationManager.UpdateMovementAnimatorValues(horizontal, vertical);
     }
 
     private void HandleWalkInput()
     {
-        _playerLocomotion.isWalking = lControlInput;
+        _playerLocomotion.isWalking = sprintInput;
     }
 
     private void HandleJumpInput()
     {
-        _playerLocomotion.isJumpPressed = xButtonInput;
+        _playerLocomotion.isJumpPressed = jumpInput;
     }
+
+    private void HandleBlockInput()
+    {
+        _playerLocomotion.isBlockingPressed = blockInput;
+    }
+
+    /*
+        private void HandleDodgeInput()
+        {
+            _playerLocomotion.isDodgePressed = dodgeInput;
+        }*/
 
     public bool CheckInputFlags()
     {
-        return (xButtonInput || isMovementPressed);
+        return (jumpInput || isMovementPressed);
     }
 }
