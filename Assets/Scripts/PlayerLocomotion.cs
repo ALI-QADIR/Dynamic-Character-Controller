@@ -33,8 +33,8 @@ public class PlayerLocomotion : MonoBehaviour
     [Tooltip("Checks if the player is jumping or not")]
     public bool isJumpPressed = false;
 
-    [Tooltip("Ground Check empty object that is placed at the feet of the character")]
-    public Transform groundCheck;
+    [Tooltip("Ground Check empty object that is placed at the feet of the character"), SerializeField]
+    private Transform _groundCheck;
 
     [Tooltip("Ground Layer Mask"), SerializeField] private LayerMask _groundLayer;
 
@@ -123,20 +123,20 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (isJumping || !isJumpPressed || !GroundCheck()) return;
         isJumping = true;
-        _animationManager.HandleJumpAnimation(isJumping, isWalking);
+        _animationManager.HandleJumpAnimation(isJumping);
         _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Acceleration);
     }
 
     private bool GroundCheck()
     {
-        return Physics.CheckSphere(groundCheck.position, 0.1f, _groundLayer);
+        return Physics.CheckSphere(_groundCheck.position, 0.1f, _groundLayer);
     }
 
     private void Update()
     {
         if (!isJumpPressed || GroundCheck() || isJumping)
         {
-            _animationManager.HandleJumpAnimation(!GroundCheck(), isWalking);
+            _animationManager.HandleJumpAnimation(!GroundCheck());
             isJumping = false;
         }
 
