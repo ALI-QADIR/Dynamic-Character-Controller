@@ -7,7 +7,7 @@ public class PlayerLocomotion : MonoBehaviour
 {
     #region Variables
 
-    #region Movement Speed Variables
+    #region Movement Mechanic Variables
 
     [Header("Movement Speeds")]
     [Tooltip("Speed at which player walks")]
@@ -22,7 +22,7 @@ public class PlayerLocomotion : MonoBehaviour
     [HideInInspector]
     public bool isWalking;
 
-    #endregion Movement Speed Variables
+    #endregion Movement Mechanic Variables
 
     #region Jumping Mechanic Variables
 
@@ -32,15 +32,14 @@ public class PlayerLocomotion : MonoBehaviour
     [Tooltip("Additional gravity multiplier for snappy falls"), SerializeField]
     private float _fallMultiplier;
 
-    [Tooltip("Checks if the player is jumping or not")]
-    public bool isJumpPressed = false;
-
     [Tooltip("Ground Check empty object that is placed at the feet of the character"), SerializeField]
     private Transform _groundCheck;
 
     [Tooltip("Ground Layer Mask"), SerializeField] private LayerMask _groundLayer;
 
     [HideInInspector] public bool isJumping;
+
+    [HideInInspector] public bool isJumpPressed = false;
 
     #endregion Jumping Mechanic Variables
 
@@ -58,7 +57,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     [HideInInspector] public bool isDodging;
 
-    // [SerializeField] private float _dodgeForce = 100f;
+    [Tooltip("The Force with which player moves up to dodge")]
+    public float dodgeVelocityY = 2f;
 
     #endregion Dodge Mechanic Variables
 
@@ -169,14 +169,13 @@ public class PlayerLocomotion : MonoBehaviour
         _animationManager.HandleBlockAnimation(isBlocking);
     }
 
-    /*public void HandleDodge()
+    public void HandleDodge()
     {
-        Debug.Log("Handle Dodge: " + isDodgePressed);
-        if (isDodging || !isDodgePressed || !GroundCheck()) return;
+        if (isDodging || !isDodgePressed || !GroundCheck() || !_inputManager.isMovementPressed) return;
         isDodging = true;
         _animationManager.HandleDodgeAnimation();
-        _playerRigidBody.AddForce(0, jumpForce, 0, ForceMode.Impulse);
-    }*/
+        _playerRigidBody.velocity = new Vector3(0, dodgeVelocityY, 0);
+    }
 
     private bool GroundCheck()
     {
@@ -190,8 +189,8 @@ public class PlayerLocomotion : MonoBehaviour
             _animationManager.HandleJumpAnimation(!GroundCheck());
             isJumping = false;
         }
-        /*
-        if (!isDodging || !GroundCheck()) { isDodging = false; }*/
+
+        if (!isDodgePressed || !GroundCheck()) { isDodging = false; }
 
         if (!_inputManager.isMovementPressed && (_playerRigidBody.velocity.x != 0 || _playerRigidBody.velocity.z != 0))
         {

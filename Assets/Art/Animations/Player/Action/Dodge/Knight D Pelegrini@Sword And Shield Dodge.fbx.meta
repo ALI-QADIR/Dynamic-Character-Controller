@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3dbbe8f0a84538746ae267086bd4b42f
+guid: 8da133be92efb6a4ead4474bda1b54a4
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -33,13 +33,13 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Blocking to Stand
+      name: Dodge
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 15
+      lastFrame: 50
       wrapMode: 0
-      orientationOffsetY: 0
+      orientationOffsetY: 20
       level: 0
       cycleOffset: 0
       loop: 0

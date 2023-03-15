@@ -20,7 +20,7 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         _playerLocomotion.HandleBlock();
-        // _playerLocomotion.HandleDodge();
+        _playerLocomotion.HandleDodge();
         if (_inputManager.CheckInputFlags())
             _playerLocomotion.HandleAllMovements();
     }

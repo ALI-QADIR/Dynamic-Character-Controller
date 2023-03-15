@@ -32,10 +32,10 @@ public class AnimationManager : MonoBehaviour
         _animator.CrossFade(_blockingAnimationHash, 0.1f);
     }
 
-    /*public void HandleDodgeAnimation()
+    public void HandleDodgeAnimation()
     {
         _animator.CrossFade(_dodgingAnimationHash, 0.1f);
-    }*/
+    }
 
     public void UpdateMovementAnimatorValues(float horizontalMovement, float verticalMovement)
     {

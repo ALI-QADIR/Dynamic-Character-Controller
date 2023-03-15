@@ -92,7 +92,7 @@ public class InputManager : MonoBehaviour
     public void HandleAllInputs()
     {
         HandleBlockInput();
-        // HandleDodgeInput();
+        HandleDodgeInput();
         HandleJumpInput();
         HandleMovementInput();
         HandleWalkInput();
@@ -130,11 +130,10 @@ public class InputManager : MonoBehaviour
         _playerLocomotion.isBlockingPressed = blockInput;
     }
 
-    /*
-        private void HandleDodgeInput()
-        {
-            _playerLocomotion.isDodgePressed = dodgeInput;
-        }*/
+    private void HandleDodgeInput()
+    {
+        _playerLocomotion.isDodgePressed = dodgeInput;
+    }
 
     public bool CheckInputFlags()
     {

@@ -1121,12 +1121,17 @@ MonoBehaviour:
   isWalking: 0
   jumpForce: 150
   _fallMultiplier: 2.5
-  isJumpPressed: 0
   _groundCheck: {fileID: 161441224}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
   isJumping: 0
+  isJumpPressed: 0
+  isBlockingPressed: 0
+  isBlocking: 0
+  isDodgePressed: 0
+  isDodging: 0
+  dodgeVelocityY: 5
 --- !u!114 &1518598373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1143,8 +1148,10 @@ MonoBehaviour:
   isMovementPressed: 0
   verticalInput: 0
   horizontalInput: 0
-  lControlInput: 0
-  xButtonInput: 0
+  sprintInput: 0
+  jumpInput: 0
+  blockInput: 0
+  dodgeInput: 0
 --- !u!114 &1518598374
 MonoBehaviour:
   m_ObjectHideFlags: 0
