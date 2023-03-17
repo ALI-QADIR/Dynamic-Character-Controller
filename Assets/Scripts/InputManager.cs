@@ -33,9 +33,6 @@ public class InputManager : MonoBehaviour
         _playerControls.PlayerMovement.Walk.performed += OnWalkInput;
         _playerControls.PlayerMovement.Walk.canceled += OnWalkInput;
 
-        /*_playerControls.PlayerActions.Sprinting.performed += OnSprintingInput;
-        _playerControls.PlayerActions.Sprinting.canceled += OnSprintingInput;*/
-
         _playerControls.PlayerActions.Jump.started += OnJumpInput;
         _playerControls.PlayerActions.Jump.canceled += OnJumpInput;
 
@@ -53,11 +50,6 @@ public class InputManager : MonoBehaviour
         horizontalInput = movementInput.x;
         isMovementPressed = verticalInput != 0 || horizontalInput != 0;
     }
-
-    /*private void OnSprintingInput(InputAction.CallbackContext context)
-    {
-        lTriggerInput = context.ReadValueAsButton();
-    }*/
 
     private void OnWalkInput(InputAction.CallbackContext context)
     {

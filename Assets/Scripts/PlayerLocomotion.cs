@@ -135,23 +135,6 @@ public class PlayerLocomotion : MonoBehaviour
         var currentRotationEuler = Quaternion.Euler(transform.eulerAngles);
 
         transform.rotation = Quaternion.Lerp(currentRotationEuler, targetRotationEuler, rotationSpeed * Time.fixedDeltaTime);
-
-        // ReSharper disable once CommentTypo
-        /* // Legacy code for rotation
-        var targetDirection = _cameraObjectTransform.forward * _inputManager.verticalInput;
-        targetDirection += _cameraObjectTransform.right * _inputManager.horizontalInput;
-        targetDirection.Normalize();
-        targetDirection.y = 0;
-
-        if (targetDirection == Vector3.zero)
-        {
-            targetDirection = transform.forward;
-        }
-
-        var targetRotation = Quaternion.LookRotation(targetDirection);
-        var playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
-
-        transform.rotation = playerRotation;*/
     }
 
     private void HandleJump()
