@@ -35,7 +35,7 @@ public class PlayerLocomotion : MonoBehaviour
     [Tooltip("Ground Check empty object that is placed at the feet of the character"), SerializeField]
     private Transform _groundCheck;
 
-    [Tooltip("Ground Layer Mask"), SerializeField] private LayerMask _groundLayer;
+    [Tooltip("Layer mask for all the walkable objects"), SerializeField] private LayerMask _walkableLayer;
 
     [HideInInspector] public bool isJumping;
 
@@ -162,7 +162,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     private bool GroundCheck()
     {
-        return Physics.CheckSphere(_groundCheck.position, 0.1f, _groundLayer);
+        return Physics.CheckSphere(_groundCheck.position, 0.1f, _walkableLayer);
     }
 
     private void Update()

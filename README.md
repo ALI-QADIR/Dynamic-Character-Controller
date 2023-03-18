@@ -73,19 +73,29 @@ Go to the player prefab. In the Player Locomotion script, make sure you have cho
 
 > **Note**: If you encounter any issues with the installation process or during usage, please refer to the "Known Issues" section of this README file or contact me for assistance.
 
-## Known issues:
+## Issues:
+
+### Fixed Issues:
+
+Resolved issues which are not yet published in the latest release.
+
+-   Fixed the issue where the character would not jump when on slopes.
+-   Fixed the issue where the jump animation would play when the character was running/walking a slope.
+
+### Known Issues:
 
 These are some of the known issues. If you find any more issues, feel free to report.
 
 -   Occasionally, the character collider may become stuck in walls.
--   The jump animation plays on slopes, which may appear unrealistic.
--   The character cannot jump while on slopes.
+-   The character jumps when you stop running on a slope.
+-   The character jumps down slopes rather than running, no issue when you are walking down the slope slowly.
 -   The dodge animation may not be appropriate since it was not found on Mixamo.
 
 ## Future updates:
 
 These are the planned future updates. (I am currently working on som other project and hence the fututre updates will be a little late).
 
+-   Add logic so that the player could walk up/down stairs.
 -   Implement attack combinations that allow for up to three attacks in sequence.
 -   Fix any known issues that arise during development and testing.
 -   Introduce health, hurt, dodge, and block logic to enhance the character's gameplay experience.
